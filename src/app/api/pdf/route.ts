@@ -44,7 +44,13 @@ export async function GET(req: NextRequest) {
                 'Cache-Control': 'no-store',
             },
         });
-    } catch (err: any) {
-        return NextResponse.json({ error: 'Erro ao gerar preview', details: err?.message }, { status: 500 });
+    } catch (err: unknown) {
+        let details = 'Erro desconhecido';
+        if (err instanceof Error) {
+            details = err.message;
+        } else if (typeof err === 'object' && err && 'message' in err) {
+            details = String((err as { message: unknown }).message);
+        }
+        return NextResponse.json({ error: 'Erro ao gerar preview', details }, { status: 500 });
     }
 }

@@ -53,7 +53,7 @@ export default function PreviewPage() {
         const data = await res.json();
         if (typeof data.totalPages === 'number') setTotalPages(data.totalPages);
         else setTotalPages(null);
-      } catch (e) {
+      } catch {
         setTotalPages(null);
       }
     };
