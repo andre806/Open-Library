@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import { Box, Typography, Chip, Button, CircularProgress } from "@mui/material";
-import Ads from "@/app/anuncio-teste/page";
+import Ads from "@/app/components/ads";
 type Book = {
   id: number;
   title: string;
@@ -12,41 +12,6 @@ type Book = {
   tags: string[];
 };
 
-// Botão com 3 cliques simulando anúncio
-function DownloadButton({ fullPdfUrl }: { fullPdfUrl: string }) {
-  const [clicks, setClicks] = useState(0);
-
-  // Troque pelos links dos seus anúncios ou páginas de teste
-  const adUrls = [
-    "/anuncio-teste",
-    "/anuncio-teste-2",
-    "/anuncio-teste-3",
-  ];
-
-  const handleClick = () => {
-    if (clicks < 3) {
-      window.open(adUrls[clicks], "_blank");
-      setClicks((c) => c + 1);
-    } else {
-      window.open(fullPdfUrl, "_blank");
-    }
-  };
-
-  return (
-    <Button
-      variant="contained"
-      color="primary"
-      onClick={handleClick}
-      sx={{ minWidth: 220, mt: 2 }}
-      disabled={!fullPdfUrl}
-    >
-      {clicks < 3
-        ? `Clique aqui ${3 - clicks}x para liberar download`
-        : "Baixar PDF Completo"}
-    </Button>
-  );
-}
-
 export default function PreviewPage() {
   const params = useParams();
   const id = params?.id;
@@ -55,6 +20,31 @@ export default function PreviewPage() {
   const [iframeError, setIframeError] = useState(false);
   const [totalPages, setTotalPages] = useState<number | null>(null);
 
+  // AdSense bloco
+  const adRef = useRef<HTMLModElement>(null);
+  const [showAds, setShowAds] = useState(false);
+
+  useEffect(() => {
+    setShowAds(true);
+  }, []);
+
+  useEffect(() => {
+    if (!showAds) return;
+    const script = document.createElement("script");
+    script.src =
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8358496567202689";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    document.body.appendChild(script);
+    script.onload = () => {
+      try {
+        // @ts-expect-error AdSense init: necessário para exibir anúncios
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch {
+        // erro ignorado propositalmente
+      }
+    };
+  }, [showAds]);
 
   // Buscar dados do livro
   useEffect(() => {
@@ -114,8 +104,8 @@ export default function PreviewPage() {
 
   return (
     <Box sx={{ maxWidth: 900, mx: "auto", mt: 4, p: 2 }}>
-      {/* Espaço reservado para componente de anúncio */}
-      <Ads />
+      {/* Bloco de anúncio AdSense */}
+     <Ads />
 
       <Typography variant="h4" gutterBottom>
         {book.title}
@@ -163,7 +153,18 @@ export default function PreviewPage() {
           )}
         </Box>
       )}
-      {fullPdfUrl && <DownloadButton fullPdfUrl={fullPdfUrl} />}
+      {fullPdfUrl && (
+        <Button
+          variant="contained"
+          color="primary"
+          href={fullPdfUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{ minWidth: 220, mt: 2 }}
+        >
+          Baixar PDF Completo
+        </Button>
+      )}
     </Box>
   );
 }
