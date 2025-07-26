@@ -36,3 +36,9 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+export async function GET(){
+  const db = await run();
+  const feedbacks = await db.collection("feedbacks").find().toArray()
+  return NextResponse.json(feedbacks)
+
+}
