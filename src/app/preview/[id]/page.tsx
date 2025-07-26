@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Box, Typography, Chip, Button, CircularProgress } from "@mui/material";
-
+import Ads from "@/app/anuncio-teste/page";
 type Book = {
   id: number;
   title: string;
@@ -55,31 +55,6 @@ export default function PreviewPage() {
   const [iframeError, setIframeError] = useState(false);
   const [totalPages, setTotalPages] = useState<number | null>(null);
 
-  // AdSense bloco
-  const adRef = useRef<HTMLModElement>(null);
-  const [showAds, setShowAds] = useState(false);
-
-  useEffect(() => {
-    setShowAds(true);
-  }, []);
-
-  useEffect(() => {
-    if (!showAds) return;
-    const script = document.createElement("script");
-    script.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8358496567202689";
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    document.body.appendChild(script);
-    script.onload = () => {
-      try {
-        // @ts-expect-error AdSense não possui typings para window.adsbygoogle
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch {
-        // erro ignorado propositalmente
-      }
-    };
-  }, [showAds]);
 
   // Buscar dados do livro
   useEffect(() => {
@@ -139,20 +114,8 @@ export default function PreviewPage() {
 
   return (
     <Box sx={{ maxWidth: 900, mx: "auto", mt: 4, p: 2 }}>
-      {/* Bloco de anúncio AdSense */}
-      {showAds && (
-        <div style={{ margin: "24px 0" }}>
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-client="ca-pub-8358496567202689"
-            data-ad-slot="3446310393"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-            ref={adRef}
-          />
-        </div>
-      )}
+      {/* Espaço reservado para componente de anúncio */}
+      <Ads />
 
       <Typography variant="h4" gutterBottom>
         {book.title}
