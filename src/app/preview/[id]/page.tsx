@@ -21,7 +21,6 @@ export default function PreviewPage() {
   const [totalPages, setTotalPages] = useState<number | null>(null);
 
   // AdSense bloco
-  const adRef = useRef<HTMLModElement>(null);
   const [showAds, setShowAds] = useState(false);
 
   useEffect(() => {

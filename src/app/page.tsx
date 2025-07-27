@@ -2,7 +2,6 @@
 
 import Explore from "./components/Explore";
 import { Box, Container, Typography, Button, Paper, Chip, Stack, Fade, Divider, Tooltip, useMediaQuery, Link as MuiLink } from "@mui/material";
-import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
 import NextLink from 'next/link';
 
@@ -17,7 +16,7 @@ const color5 = '#8ba8ef';
 const gradient = `linear-gradient(90deg, ${color1} 0%, ${color5} 100%)`;
 const bgColor = color4;
 const cardBg = '#fff';
-const primary = color1;
+// const primary = color1;
 const secondary = color2;
 
 export default function Home() {

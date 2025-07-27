@@ -26,7 +26,6 @@ export default function Ads() {
   }, []);
 
   // Paleta e visual global
-  const color1 = '#234e8c';
   const color5 = '#8ba8ef';
 
   return (

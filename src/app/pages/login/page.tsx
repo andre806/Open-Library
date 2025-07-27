@@ -35,8 +35,8 @@ export default function Login() {
     // Paleta e gradiente global (igual home/layout)
     const color1 = '#234e8c';
     const color2 = '#3d65a5';
-    const color3 = '#577bbe';
-    const color4 = '#7192d6';
+    // const color3 = '#577bbe';
+    // const color4 = '#7192d6';
     const color5 = '#8ba8ef';
     const gradient = `linear-gradient(90deg, ${color1} 0%, ${color5} 100%)`;
 

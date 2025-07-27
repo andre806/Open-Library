@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
         let srcDoc: PDFDocument;
         try {
             srcDoc = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
-        } catch (e: any) {
+        } catch {
             return NextResponse.json({ error: 'Este PDF é protegido por senha e não pode ser visualizado.' }, { status: 403 });
         }
         // Se o PDF está criptografado, o conteúdo será vazio
