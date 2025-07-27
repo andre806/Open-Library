@@ -1,6 +1,8 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Box, Paper, Stack, CssBaseline } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,17 +24,35 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Paleta e gradiente global
+  const color1 = '#234e8c';
+  const color5 = '#8ba8ef';
+  const gradient = `linear-gradient(90deg, ${color1} 0%, ${color5} 100%)`;
+
   return (
     <html lang="en">
       <head>
         <meta name="google-adsense-account" content="ca-pub-8358496567202689"></meta>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8358496567202689"
-     crossOrigin="anonymous"></script>
+          crossOrigin="anonymous"></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{
+          minHeight: '100vh',
+          background: gradient,
+          margin: 0,
+          padding: 0,
+        }}
       >
-        {children}
+        <CssBaseline />
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', py: { xs: 2, md: 4 } }}>
+          <Paper elevation={6} sx={{ width: '100%', maxWidth: 1600, minHeight: '100vh', borderRadius: 0, bgcolor: '#f7faff', boxShadow: 6, px: { xs: 0, md: 4 }, py: { xs: 0, md: 2 } }}>
+            <Stack sx={{ minHeight: '100vh', width: '100%' }}>
+              {children}
+            </Stack>
+          </Paper>
+        </Box>
       </body>
     </html>
   );

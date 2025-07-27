@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get("file") as File;
+    const cover = formData.get("capa") as File | null; // novo campo capa
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const owner_id = formData.get("owner_id") as string;
@@ -29,9 +30,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "File is missing." }, { status: 400 });
     }
 
+    // Upload do PDF
     const arrayBuffer = await file.arrayBuffer();
     const filename = file.name;
-
     const { data: storageData, error: storageError } = await supabase.storage
       .from("pdfs")
       .upload(filename, new Blob([arrayBuffer]), {
@@ -44,7 +45,31 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: storageError.message }, { status: 500 });
     }
 
-    // Salva metadados na tabela 'pdfs', incluindo tags
+    // Upload da capa (se enviada), senão salva null
+    let coverUrl: string | null = null;
+    if (cover) {
+      const coverBuffer = await cover.arrayBuffer();
+      const coverFilename = `cover_${Date.now()}_${cover.name}`;
+      const { data: coverData, error: coverError } = await supabase.storage
+        .from("pdfs")
+        .upload(coverFilename, new Blob([coverBuffer]), {
+          cacheControl: "3600",
+          upsert: false,
+        });
+      if (coverError) {
+        console.error("Supabase cover upload error:", coverError);
+        return NextResponse.json({ error: coverError.message }, { status: 500 });
+      }
+      // Monta a URL pública da capa
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      coverUrl = coverData?.path && supabaseUrl
+        ? `${supabaseUrl}/storage/v1/object/public/pdfs/${coverData.path}`
+        : null;
+    } else {
+      coverUrl = null;
+    }
+
+    // Salva metadados na tabela 'pdfs', incluindo tags e capa
     const { data: dbData, error: dbError } = await supabase
       .from("pdfs")
       .insert([
@@ -54,7 +79,8 @@ export async function POST(request: NextRequest) {
           owner_id,
           path: storageData?.path,
           filename,
-          tags, // <-- envia o array de tags
+          tags,
+          capa: coverUrl, // salva a url da capa
         },
       ])
       .select()

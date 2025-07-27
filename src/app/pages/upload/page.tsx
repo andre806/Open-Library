@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { TextField, Button, Box, Typography, Autocomplete } from "@mui/material";
+import { TextField, Button, Box, Typography, Autocomplete, Paper, Stack } from "@mui/material";
 
 export default function Upload() {
     const [pdf, setPdf] = useState({
@@ -103,58 +103,93 @@ export default function Upload() {
         }
     };
 
+    // Paleta e gradiente global (igual home/layout)
+    const color1 = '#234e8c';
+    const color2 = '#3d65a5';
+    const color3 = '#577bbe';
+    const color4 = '#7192d6';
+    const color5 = '#8ba8ef';
+    const gradient = `linear-gradient(90deg, ${color1} 0%, ${color5} 100%)`;
+
     return (
-        <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 500, mx: "auto", mt: 5 }}
-        >
-            <Typography variant="h5" align="center">Upload PDF</Typography>
-            <TextField
-                label="Title"
-                name="title"
-                value={pdf.title}
-                InputProps={{ readOnly: true }}
-                sx={{ background: "#f5f5f5" }}
-            />
-            <TextField
-                label="Description"
-                name="description"
-                value={pdf.description}
-                onChange={handleChange}
-                multiline
-                rows={2}
-            />
-            <Autocomplete
-                multiple
-                options={existingTags}
-                value={selectedTags}
-                onChange={handleSelectTags}
-                renderInput={(params) => (
-                    <TextField {...params} label="Select Existing Tags" placeholder="Tags" name="existingTags" />
-                )}
-            />
-            <Button
-                variant="contained"
-                component="label"
-            >
-                Select PDF
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    hidden
-                    onChange={handleFileChange}
-                />
-            </Button>
-            {file && <Typography variant="body2">Selected: {file.name}</Typography>}
-            <Button type="submit" variant="contained" color="primary">
-                Upload
-            </Button>
-            {message && (
-                <Typography color={message.includes("success") ? "primary" : "error"} align="center">
-                    {message}
-                </Typography>
-            )}
+        <Box sx={{ minHeight: '100vh', bgcolor: gradient, py: { xs: 2, md: 6 } }}>
+            <Stack alignItems="center" justifyContent="flex-start" sx={{ minHeight: '100vh', width: '100%' }}>
+                <Paper elevation={8} sx={{ width: '100%', maxWidth: 500, mx: 'auto', p: { xs: 2, md: 4 }, borderRadius: 4, bgcolor: '#f7faff', boxShadow: 8 }}>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                    >
+                        <Typography variant="h5" align="center" sx={{ color: color1, fontWeight: 800, letterSpacing: 1, mb: 1 }}>Upload PDF</Typography>
+                        <TextField
+                            label="Title"
+                            name="title"
+                            value={pdf.title}
+                            InputProps={{ readOnly: true }}
+                            sx={{ background: "#f5f5f5" }}
+                        />
+                        <TextField
+                            label="Description"
+                            name="description"
+                            value={pdf.description}
+                            onChange={handleChange}
+                            multiline
+                            rows={2}
+                        />
+                        <Autocomplete
+                            multiple
+                            options={existingTags}
+                            value={selectedTags}
+                            onChange={handleSelectTags}
+                            renderInput={(params) => (
+                                <TextField {...params} label="Select Existing Tags" placeholder="Tags" name="existingTags" />
+                            )}
+                        />
+                        <Button
+                            variant="contained"
+                            component="label"
+                            sx={{
+                                background: `linear-gradient(90deg, ${color3} 0%, ${color4} 100%)`,
+                                color: '#fff',
+                                fontWeight: 800,
+                                borderRadius: 3,
+                                letterSpacing: 1,
+                                boxShadow: 4,
+                                border: `2.5px solid ${color3}`,
+                                outline: `2px solid ${color4}`,
+                                outlineOffset: '2px',
+                                filter: 'drop-shadow(0 2px 8px #7192d655)',
+                                transition: 'all 0.18s',
+                                '&:hover': {
+                                    background: color4,
+                                    color: color1,
+                                    borderColor: color2,
+                                    boxShadow: 8,
+                                    outline: `2.5px solid ${color2}`,
+                                    filter: 'drop-shadow(0 4px 16px #234e8c33)',
+                                },
+                            }}
+                        >
+                            Select PDF
+                            <input
+                                type="file"
+                                accept="application/pdf"
+                                hidden
+                                onChange={handleFileChange}
+                            />
+                        </Button>
+                        {file && <Typography variant="body2">Selected: {file.name}</Typography>}
+                        <Button type="submit" variant="contained" color="primary" sx={{ fontWeight: 700, letterSpacing: 1, borderRadius: 3, boxShadow: 3, background: gradient, color: color1, '&:hover': { background: color2, color: '#fff', boxShadow: 6 }, transition: 'all 0.2s', }}>
+                            Upload
+                        </Button>
+                        {message && (
+                            <Typography color={message.includes("success") ? "primary" : "error"} align="center">
+                                {message}
+                            </Typography>
+                        )}
+                    </Box>
+                </Paper>
+            </Stack>
         </Box>
     );
 }
