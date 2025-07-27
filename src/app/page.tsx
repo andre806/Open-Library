@@ -25,6 +25,10 @@ export default function Home() {
   return (
     <Box sx={{ bgcolor: bgColor, minHeight: '100vh', py: { xs: 3, md: 6 } }}>
       {/* Hero Section */}
+      {/* Meet the creator link at the top */}
+      <Container maxWidth="md" sx={{ textAlign: 'center', mb: 2 }}>
+        
+      </Container>
       <Fade in timeout={900}>
         <Container maxWidth="md" sx={{ textAlign: 'center', mb: 8 }}>
           <Chip label="Open Library" sx={{ mb: 2, fontWeight: 700, bgcolor: secondary, color: '#fff', fontSize: 18, letterSpacing: 1.5, boxShadow: 2 }} />
@@ -145,6 +149,45 @@ export default function Home() {
                 </Button>
               </MuiLink>
             </Tooltip>
+            {/* Meet the creator nav link */}
+            <Tooltip title="Meet the creator" arrow>
+              <Box
+                component="a"
+                href="https://andrepaulo.vercel.app/public/home"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  color: color2,
+                  fontWeight: 700,
+                  fontSize: { xs: 16, sm: 18 },
+                  letterSpacing: 1,
+                  textDecoration: 'underline',
+                  borderRadius: 3,
+                  px: { xs: 2, sm: 3 },
+                  py: { xs: 1, sm: 1.5 },
+                  ml: { xs: 0, sm: 1 },
+                  mt: { xs: 1, sm: 0 },
+                  transition: 'color 0.2s, background 0.2s',
+                  background: '#fff',
+                  boxShadow: { xs: 1, sm: '0 2px 8px #234e8c22' },
+                  border: `2px solid ${color2}`,
+                  width: { xs: '100%', sm: 'auto' },
+                  justifyContent: { xs: 'center', sm: 'flex-start' },
+                }}
+                onMouseOver={e => {
+                  (e.currentTarget as HTMLElement).style.color = color1;
+                  (e.currentTarget as HTMLElement).style.background = color5;
+                }}
+                onMouseOut={e => {
+                  (e.currentTarget as HTMLElement).style.color = color2;
+                  (e.currentTarget as HTMLElement).style.background = '#fff';
+                }}
+              >
+                Meet the creator
+              </Box>
+            </Tooltip>
           </Stack>
           <Divider sx={{ my: 4, borderColor: color3, opacity: 0.3 }} />
         </Container>
@@ -221,6 +264,26 @@ export default function Home() {
                 Create Free Account
               </Button>
             </MuiLink>
+            {/* Meet the creator link */}
+            <Box sx={{ mt: 4 }}>
+              <a
+                href="https://andrepaulo.vercel.app/public/home"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: color2,
+                  fontWeight: 600,
+                  fontSize: 18,
+                  letterSpacing: 1,
+                  textDecoration: 'underline',
+                  transition: 'color 0.2s',
+                }}
+                onMouseOver={e => (e.currentTarget.style.color = color1)}
+                onMouseOut={e => (e.currentTarget.style.color = color2)}
+              >
+                Meet the creator
+              </a>
+            </Box>
           </Paper>
         </Fade>
       </Container>

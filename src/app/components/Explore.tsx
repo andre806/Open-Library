@@ -21,15 +21,14 @@ export default function Explore() {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
-    // Paleta e gradiente global (igual home/layout)
+    // Global palette and gradient (same as home/layout)
     const color1 = '#234e8c';
     const color2 = '#3d65a5';
     const color3 = '#577bbe';
-    const color4 = '#7192d6';
     const color5 = '#8ba8ef';
     const gradient = `linear-gradient(90deg, ${color1} 0%, ${color5} 100%)`;
 
-    // Busca livros e tags
+    // Fetch books and tags
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -37,7 +36,7 @@ export default function Explore() {
             const dataBooks = await resBooks.json();
             setBooks(dataBooks || []);
             setFilteredBooks(dataBooks || []);
-            // Busca todas as tags
+            // Fetch all tags
             const resTags = await fetch("/api/tags");
             const dataTags = await resTags.json();
             setAllTags(
@@ -52,7 +51,7 @@ export default function Explore() {
         fetchData();
     }, []);
 
-    // Filtra livros ao pesquisar ou selecionar tags
+    // Filter books when searching or selecting tags
     useEffect(() => {
         let filtered = books;
         if (search.trim()) {
@@ -71,7 +70,7 @@ export default function Explore() {
     }, [search, selectedTags, books]);
 
     const handleBookClick = (book: Book) => {
-        // Redireciona para página de preview do PDF
+        // Redirect to PDF preview page
         router.push(`/preview/${book.id}`);
     };
 
@@ -79,10 +78,10 @@ export default function Explore() {
         <Box sx={{ minHeight: '100vh', bgcolor: gradient, py: { xs: 2, md: 6 } }}>
             <Stack alignItems="center" justifyContent="flex-start" sx={{ minHeight: '100vh', width: '100%' }}>
                 <Paper elevation={8} sx={{ width: '100%', maxWidth: 900, mx: 'auto', p: { xs: 2, md: 4 }, borderRadius: 4, bgcolor: '#f7faff', boxShadow: 8 }}>
-                    <Typography variant="h4" align="center" gutterBottom sx={{ color: color1, fontWeight: 800, letterSpacing: 1, mb: 2 }}>Explore Livros</Typography>
+                    <Typography variant="h4" align="center" gutterBottom sx={{ color: color1, fontWeight: 800, letterSpacing: 1, mb: 2 }}>Explore Books</Typography>
                     <Box sx={{ display: "flex", gap: 2, mb: 3, flexWrap: "wrap" }}>
                         <TextField
-                            label="Pesquisar livro"
+                            label="Search book"
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             sx={{ flex: 1, minWidth: 220 }}
@@ -98,7 +97,7 @@ export default function Explore() {
                                 ))
                             }
                             renderInput={params => (
-                                <TextField {...params} label="Filtrar por categoria" placeholder="Categorias" />
+                                <TextField {...params} label="Filter by category" placeholder="Categories" />
                             )}
                             sx={{ minWidth: 220, flex: 1 }}
                         />
@@ -109,7 +108,7 @@ export default function Explore() {
                         </Box>
                     ) : filteredBooks.length === 0 ? (
                         <Typography align="center" color="text.secondary" sx={{ mt: 6 }}>
-                            Nenhum livro encontrado.
+                            No books found.
                         </Typography>
                     ) : (
                         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" }, gap: 3 }}>
@@ -132,6 +131,7 @@ export default function Explore() {
                             ))}
                         </Box>
                     )}
+                    
                 </Paper>
             </Stack>
         </Box>
